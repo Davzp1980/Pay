@@ -25,7 +25,7 @@ func Test_CreateAdmin(t *testing.T) {
 	}
 
 	fmt.Println(string(out))
-	defer exec.Command("docker", "stop", "test").Output()
+	exec.Command("docker", "stop", "test").Output()
 
 	db, err := sql.Open("postgres", "host=127.0.0.1 port=5432 user=postgres password=qwerty dbname=postgres sslmode=disable")
 	if err != nil {
