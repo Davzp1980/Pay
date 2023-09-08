@@ -11,9 +11,15 @@ import (
 	"strconv"
 )
 
-//Поля в postman:
+// Поля в postman:
 // "name"
 // "password"
+type outputAccounts struct {
+	Id      int    `json:"id"`
+	User_id int    `json:"user_id"`
+	Iban    string `json:"iban"`
+	Balance int    `json:"balance"`
+}
 
 func CreateAccount(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -105,18 +111,18 @@ func UnBlockAccount(db *sql.DB) http.HandlerFunc {
 func GetAccountsById(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		rows, err := db.Query("SELECT * FROM accounts ORDER BY id")
+		rows, err := db.Query("SELECT id, user_id, iban, balance  FROM accounts ORDER BY id")
 		if err != nil {
 			log.Panicln("Account selection error")
 			w.WriteHeader(http.StatusNotFound)
 		}
 
-		sortedAccounts := []pay.Account{}
+		sortedAccounts := []outputAccounts{}
 
 		for rows.Next() {
-			var a pay.Account
+			var a outputAccounts
 
-			if err = rows.Scan(&a.ID, &a.UserId, &a.Iban, &a.Balance); err != nil {
+			if err = rows.Scan(&a.Id, &a.User_id, &a.Iban, &a.Balance); err != nil {
 				log.Println(err)
 			}
 			sortedAccounts = append(sortedAccounts, a)
@@ -135,12 +141,12 @@ func GetAccountsByIban(db *sql.DB) http.HandlerFunc {
 			log.Panicln("Account selection error")
 			w.WriteHeader(http.StatusNotFound)
 		}
-		sortedAccounts := []pay.Account{}
+		sortedAccounts := []outputAccounts{}
 
 		for rows.Next() {
-			var a pay.Account
+			var a outputAccounts
 
-			if err = rows.Scan(&a.ID, &a.UserId, &a.Iban, &a.Balance); err != nil {
+			if err = rows.Scan(&a.Id, &a.User_id, &a.Iban, &a.Balance); err != nil {
 				log.Println(err)
 			}
 			sortedAccounts = append(sortedAccounts, a)
@@ -159,12 +165,12 @@ func GetAccountsByBalance(db *sql.DB) http.HandlerFunc {
 			log.Panicln("Account selection error")
 			w.WriteHeader(http.StatusNotFound)
 		}
-		sortedAccounts := []pay.Account{}
+		sortedAccounts := []outputAccounts{}
 
 		for rows.Next() {
-			var a pay.Account
+			var a outputAccounts
 
-			if err = rows.Scan(&a.ID, &a.UserId, &a.Iban, &a.Balance); err != nil {
+			if err = rows.Scan(&a.Id, &a.User_id, &a.Iban, &a.Balance); err != nil {
 				log.Println(err)
 			}
 			sortedAccounts = append(sortedAccounts, a)

@@ -32,10 +32,11 @@ type Payment struct {
 }
 
 type Input struct {
-	Name     string `json:"name"`
-	Password string `json:"password"`
-	Sort     string `json:"sort"`
-	Iban     string `json:"iban"`
+	Name            string `json:"name"`
+	Password        string `json:"password"`
+	Sort            string `json:"sort"`
+	Iban            string `json:"iban"`
+	AmountReplenish int    `json:"amount_replenish"`
 }
 
 type InputPayment struct {

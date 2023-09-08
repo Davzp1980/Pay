@@ -41,6 +41,7 @@ func main() {
 
 	router.HandleFunc("/create-account", repository.CreateAccount(db)).Methods("POST")
 	router.HandleFunc("/createa-payment", repository.CreatePayment(db)).Methods("POST")
+	router.HandleFunc("/replenish-account", repository.ReplenishAccount(db)).Methods("POST")
 
 	router.HandleFunc("/get-account-id", repository.GetAccountsById(db)).Methods("GET")
 	router.HandleFunc("/get-account-iban", repository.GetAccountsByIban(db)).Methods("GET")

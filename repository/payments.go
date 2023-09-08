@@ -140,3 +140,35 @@ func GetPaymentsDate(db *sql.DB) http.HandlerFunc {
 
 	}
 }
+
+func ReplenishAccount(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var input pay.Input
+		var user pay.User
+		var amountAccount int
+
+		json.NewDecoder(r.Body).Decode(&input)
+		//balance:=input.AmountReplenish+
+		err := db.QueryRow("SELECT id FROM users WHERE name=$1", input.Name).Scan(&user.ID)
+		if err != nil {
+			log.Println("User does not exists")
+			w.WriteHeader(http.StatusBadRequest)
+		}
+
+		err = db.QueryRow("SELECT balance FROM accounts WHERE user_id=$1", user.ID).Scan(&amountAccount)
+		if err != nil {
+			log.Println("Account does not exists")
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+		balance := input.AmountReplenish + amountAccount
+
+		_, err = db.Exec("UPDATE accounts SET balance=$1", balance)
+		if err != nil {
+			log.Println("UPDATE account error")
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+		w.Write([]byte(fmt.Sprintf("Account was replenished for %v\n", input.AmountReplenish)))
+		w.Write([]byte(fmt.Sprintf("Amount in the account %v", balance)))
+	}
+
+}

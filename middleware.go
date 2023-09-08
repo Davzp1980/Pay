@@ -9,7 +9,7 @@ import (
 
 func UserIdentification(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/login" && r.URL.Path != "/createadmin" && r.URL.Path != "/createuser" {
+		if r.URL.Path != "/sing-in" && r.URL.Path != "/createadmin" && r.URL.Path != "/createuser" {
 
 			c, err := r.Cookie("token")
 			if err != nil {
