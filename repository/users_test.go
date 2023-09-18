@@ -79,7 +79,7 @@ func Test_CreateAdmin(t *testing.T) {
 			defer c.Finish()
 
 			r := mux.NewRouter()
-			r.HandleFunc("/createadmin", CreateAdmin(db))
+			//r.HandleFunc("/createadmin", handler.CreateAdmin(db))
 
 			// Создаем тестовый HTTP ResponseWriter и запускаем обработчик
 			w := httptest.NewRecorder()

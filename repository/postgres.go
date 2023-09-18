@@ -17,7 +17,7 @@ func MigrateDB(db *sql.DB) error {
 			user_id serial NOT NULL,
 			iban VARCHAR (34) NOT NULL UNIQUE,
 			balance integer DEFAULT 0,
-			blocked boolean
+			blocked boolean DEFAULT false
 
 		);
 		CREATE TABLE IF NOT EXISTS payments (
