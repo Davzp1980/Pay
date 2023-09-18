@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-
+	//password := os.Getenv("DB_PASSWORD") fmt.Sprintf("host=go_db user=postgres password=%v dbname=mydb sslmode=disable", password
 	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatal("BD is not opend")

@@ -248,7 +248,7 @@ func GetPaymentsDate(db *sql.DB) ([]pay.Payment, error) {
 
 func ReplenishAccount(db *sql.DB, name, iban string, amountReplenish int) (string, error) {
 	var user pay.User
-	var amountAccount int
+	var amountAccount pay.Account
 
 	err := db.QueryRow("SELECT id FROM users WHERE name=$1", name).Scan(&user.ID)
 	if err != nil {
@@ -256,12 +256,12 @@ func ReplenishAccount(db *sql.DB, name, iban string, amountReplenish int) (strin
 		return "User does not exists", err
 	}
 
-	err = db.QueryRow("SELECT balance FROM accounts WHERE user_id=$1", user.ID).Scan(&amountAccount)
+	err = db.QueryRow("SELECT balance FROM accounts WHERE iban=$1", iban).Scan(&amountAccount.Balance)
 	if err != nil {
 		log.Println("Account does not exists")
 		return "Account does not exists", err
 	}
-	balance := amountReplenish + amountAccount
+	balance := amountReplenish + amountAccount.Balance
 
 	_, err = db.Exec("UPDATE accounts SET balance=$1 WHERE iban=$2", balance, iban)
 	if err != nil {
